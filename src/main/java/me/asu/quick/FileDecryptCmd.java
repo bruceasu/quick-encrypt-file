@@ -88,7 +88,9 @@ public class FileDecryptCmd implements Command{
         }
         for (Path path : pathList) {
             // 解密
+            System.out.println("Decrypting " + path);
             Path outputPath =  decryptToGzbFile(path, dir, pass);
+            System.out.println("Write to " + outputPath);
         }
 
         return OK;
@@ -112,20 +114,6 @@ public class FileDecryptCmd implements Command{
             } else {
                 if (p.toString().endsWith(".gzb")) { pathList.add(p); }
             }
-        }
-    }
-
-    private void writeToFile(String output, byte[] data) {
-        try {
-            Path path = Paths.get(output);
-            Path parent = path.getParent();
-            if (!Files.isDirectory(path)) {
-                Files.createDirectories(parent);
-            }
-            Files.write(path, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(IO_ERROR);
         }
     }
 

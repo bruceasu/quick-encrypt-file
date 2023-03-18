@@ -18,6 +18,7 @@ package me.asu.quick.util; /**
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -97,6 +98,27 @@ public class GzipUtils {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public static void gzip(Path in, Path out) throws IOException {
+        gzip(Files.newInputStream(in), out);
+    }
+
+    public static void gzip(String in, String out) throws IOException {
+        gzip(Files.newInputStream(Paths.get(in)), out);
+    }
+    public static void gzip(File in, File out) throws IOException {
+        gzip(Files.newInputStream(in.toPath()), out);
+    }
+
+    public static final void gzip(InputStream in, Path tempFile)
+    throws IOException {
+        gzip(in, tempFile.toString());
+    }
+
+    public static final void gzip(InputStream in, File tempFile)
+    throws IOException {
+        gzip(in, tempFile.toString());
     }
 
     public static final void gzip(InputStream in, String tempFile)

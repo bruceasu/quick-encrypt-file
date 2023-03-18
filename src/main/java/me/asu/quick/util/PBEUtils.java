@@ -102,8 +102,9 @@ public class PBEUtils {
         outputStream.write("---\n".getBytes(StandardCharsets.UTF_8));
         encryptGzb(inputStream, outputStream, cipher);
         long            end  = System.currentTimeMillis();
-        System.err.printf("Cost %s ms. %s => %s.%n",
-                (end-start), in.toString(), outFileName);
+        final long cost = end - start;
+        System.err.printf("Cost %s ms, %d bytes/s. %s => %s.%n",
+                cost, Files.size(in)*1000/cost, in, outFileName);
         return outPath;
     }
 
@@ -219,17 +220,17 @@ public class PBEUtils {
         String fileName = meta.get("filename");
         Path outPath = Paths.get(outDir.toAbsolutePath().toString(), fileName);
 
-        long            start  = System.currentTimeMillis();
-        Key             key    = toKey(password);
+        long start = System.currentTimeMillis();
+        Key key = toKey(password);
         IvParameterSpec ivSpec = new IvParameterSpec(IV);
         PBEParameterSpec paramSpec = new PBEParameterSpec(SALT, ITERATION_COUNT, ivSpec);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
         decryptGzb(in, outPath, cipher);
-
-        long            end  = System.currentTimeMillis();
-        System.err.printf("Cost %s ms. %s => %s.%n",
-                (end-start), in, outPath);
+        long end  = System.currentTimeMillis();
+        final long cost = end - start;
+        System.err.printf("Cost %s ms, %d bytes/s. %s => %s.%n",
+                cost, Files.size(in)*1000/cost, in, outPath);
         return outPath;
     }
 

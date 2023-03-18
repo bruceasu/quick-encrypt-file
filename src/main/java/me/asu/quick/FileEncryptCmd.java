@@ -87,26 +87,11 @@ public class FileEncryptCmd implements Command {
         List<Path> pathList = new ArrayList<>();
         findFiles(cmdArgs, pathList);
         for (Path p : pathList) {
-            Path target = encryptToGzbFile(p, outputPath, "12345678");
+            System.out.println("Encrypting " + p);
+            Path target = encryptToGzbFile(p, outputPath, pass);
+            System.out.println("Write to " + target);
         }
         return OK;
-    }
-
-    private void writeToFile(String output,
-            byte[] encrypt,
-            Encoder mimeEncoder) {
-        try {
-            Path path = Paths.get(output);
-            Path parent = path.getParent();
-            if (!Files.isDirectory(path)) {
-                Files.createDirectories(parent);
-            }
-            byte[] data = mimeEncoder.encode(encrypt);
-            Files.write(path, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(IO_ERROR);
-        }
     }
 
     private void findFiles(String[] cmdArgs, List<Path> pathList)
@@ -123,7 +108,7 @@ public class FileEncryptCmd implements Command {
                     }
                 });
             } else {
-                if (p.toString().endsWith(".gzb")) { pathList.add(p); }
+               pathList.add(p);
             }
         }
     }
