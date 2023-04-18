@@ -7,4 +7,3 @@ encrypted meta2
 encrypted data
 1. gzip
 2. encrypt
-3. base64

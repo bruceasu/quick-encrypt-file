@@ -1,10 +1,9 @@
 package me.asu.quick;
 
-import static me.asu.quick.ErrorCode.IO_ERROR;
 import static me.asu.quick.ErrorCode.OK;
 import static me.asu.quick.ErrorCode.PARAM_REQUIRED_ERROR;
 import static me.asu.quick.ErrorCode.UNKNOWN_ERROR;
-import static me.asu.quick.util.PBEUtils.encryptToGzbFile;
+import static me.asu.quick.util.PBEUtils.encryptToGzeFile;
 import static me.asu.quick.util.StringUtils.isEmpty;
 import static me.asu.quick.util.StringUtils.readPassword;
 
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Base64.Encoder;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -88,7 +86,7 @@ public class FileEncryptCmd implements Command {
         findFiles(cmdArgs, pathList);
         for (Path p : pathList) {
             System.out.println("Encrypting " + p);
-            Path target = encryptToGzbFile(p, outputPath, pass);
+            Path target = encryptToGzeFile(p, outputPath, pass);
             System.out.println("Write to " + target);
         }
         return OK;
@@ -103,7 +101,7 @@ public class FileEncryptCmd implements Command {
                     @Override
                     public FileVisitResult visitFile(Path file,
                             BasicFileAttributes attrs) throws IOException {
-                        pathList.add(file);
+                        if (!file.toString().endsWith(".e")) pathList.add(file);
                         return FileVisitResult.CONTINUE;
                     }
                 });

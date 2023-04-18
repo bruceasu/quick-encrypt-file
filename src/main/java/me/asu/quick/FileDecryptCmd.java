@@ -1,11 +1,10 @@
 package me.asu.quick;
 
 
-import static me.asu.quick.ErrorCode.IO_ERROR;
 import static me.asu.quick.ErrorCode.OK;
 import static me.asu.quick.ErrorCode.PARAM_REQUIRED_ERROR;
 import static me.asu.quick.ErrorCode.UNKNOWN_ERROR;
-import static me.asu.quick.util.PBEUtils.decryptToGzbFile;
+import static me.asu.quick.util.PBEUtils.decryptGzeToFile;
 import static me.asu.quick.util.StringUtils.isEmpty;
 import static me.asu.quick.util.StringUtils.readPassword;
 
@@ -89,7 +88,7 @@ public class FileDecryptCmd implements Command{
         for (Path path : pathList) {
             // 解密
             System.out.println("Decrypting " + path);
-            Path outputPath =  decryptToGzbFile(path, dir, pass);
+            Path outputPath =  decryptGzeToFile(path, dir, pass);
             System.out.println("Write to " + outputPath);
         }
 
@@ -105,14 +104,14 @@ public class FileDecryptCmd implements Command{
                     @Override
                     public FileVisitResult visitFile(Path file,
                             BasicFileAttributes attrs) throws IOException {
-                        if (file.toString().endsWith(".gzb")) {
+                        if (file.toString().endsWith(".e")) {
                             pathList.add(file);
                         }
                         return FileVisitResult.CONTINUE;
                     }
                 });
             } else {
-                if (p.toString().endsWith(".gzb")) { pathList.add(p); }
+                if (p.toString().endsWith(".e")) { pathList.add(p); }
             }
         }
     }

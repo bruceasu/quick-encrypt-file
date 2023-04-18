@@ -2,19 +2,15 @@ package me.asu.quick;
 
 
 import static me.asu.quick.ErrorCode.*;
-import static me.asu.quick.util.PBEUtils.readGzbMetaInfo;
+import static me.asu.quick.util.PBEUtils.readGzeMetaInfo;
 import static me.asu.quick.util.StringUtils.isEmpty;
 import static me.asu.quick.util.StringUtils.readPassword;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
-import java.util.Base64.Decoder;
 import me.asu.quick.util.GetOpt;
-import me.asu.quick.util.PBEUtils;
 
 public class FileShowMetaInfoCmd implements Command {
 
@@ -70,7 +66,7 @@ public class FileShowMetaInfoCmd implements Command {
         List<Path> pathList= new ArrayList<>();
         findFiles(cmdArgs, pathList);
         for (Path path : pathList) {
-            Map<String, String> map = readGzbMetaInfo(path, pass);
+            Map<String, String> map = readGzeMetaInfo(path, pass);
             if (map.isEmpty()) continue;
             String version = map.remove("version");
             System.out.println("version: "+ version);
