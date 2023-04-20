@@ -76,13 +76,15 @@ public class PBEUtils {
         if (!Files.isRegularFile(in)) throw new FileNotFoundException(in.toString() + " is not found.");
 
         Path fileName = in.getFileName();
+        Path parent = in.getParent();
         String outFileName = Md5Utils.md5(in.toAbsolutePath().toString()) +".e";
         Path outPath = Paths.get(outDir.toAbsolutePath().toString(), outFileName);
         OutputStream outputStream = Files.newOutputStream(outPath);
         InputStream inputStream = Files.newInputStream(in);
         long            start  = System.currentTimeMillis();
         long size = Files.size(in);
-        String encryptedFileName = encryptString("filename:" + fileName.toString(), password);
+
+        String encryptedFileName = encryptString("filename:" + parent.getFileName().toString() + "/" + fileName.toString(), password);
         String encryptedFileSize = encryptString("filesize:" + size, password);
         Key             key    = toKey(password);
         IvParameterSpec ivSpec = new IvParameterSpec(IV);
@@ -189,7 +191,10 @@ public class PBEUtils {
         String version = meta.get("version");
         String fileName = meta.get("filename");
         Path outPath = Paths.get(outDir.toAbsolutePath().toString(), fileName);
-
+        final Path parent = outPath.getParent();
+        if(!Files.isDirectory(parent)) {
+            Files.createDirectories(parent);
+        }
         long start = System.currentTimeMillis();
         Key key = toKey(password);
         IvParameterSpec ivSpec = new IvParameterSpec(IV);
