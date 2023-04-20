@@ -87,12 +87,12 @@ public class FileShowMetaInfoCmd implements Command {
                     @Override
                     public FileVisitResult visitFile(Path file,
                             BasicFileAttributes attrs) throws IOException {
-                        if (file.toString().endsWith(".gzb")) pathList.add(file);
+                        if (file.toString().endsWith(".e")) pathList.add(file);
                         return FileVisitResult.CONTINUE;
                     }
                 });
             } else {
-                if (p.toString().endsWith(".gzb")) pathList.add(p);
+                if (p.toString().endsWith(".e")) pathList.add(p);
             }
         }
     }
