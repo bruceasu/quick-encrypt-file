@@ -84,7 +84,9 @@ public class PBEUtils {
         long            start  = System.currentTimeMillis();
         long size = Files.size(in);
 
-        String encryptedFileName = encryptString("filename:" + parent.getFileName().toString() + "/" + fileName.toString(), password);
+        String encryptedFileName = parent != null
+                ? encryptString("filename:" + parent.getFileName().toString() + "/" + fileName.toString(), password)
+                : encryptString("filename:" + fileName.toString(), password);
         String encryptedFileSize = encryptString("filesize:" + size, password);
         Key             key    = toKey(password);
         IvParameterSpec ivSpec = new IvParameterSpec(IV);
