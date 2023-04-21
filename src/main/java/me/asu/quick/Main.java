@@ -18,6 +18,8 @@ public class Main {
                 new FileEncryptCmd(),
                 new FileShowMetaInfoCmd(),
                 new FileDecryptCmd(),
+                new FileCopyCmd(),
+                new FileMoveCmd(),
         };
         for (Command cmd : list) {
             commandMap.put(cmd.name(), cmd);
